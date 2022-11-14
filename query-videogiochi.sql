@@ -27,8 +27,8 @@ WHERE description like '%facere%';
 --7- Selezionare tutti i videogame che hanno la categoria 2 (FPS) o 6 (RPG), mostrandoli una sola volta (del videogioco vogliamo solo l'ID) (287)
 select DISTINCT videogame_id
 FROM category_videogame
-WHERE category_id = 2 
-OR category_id = 6;
+WHERE category_id = 2 OR category_id = 6
+GROUP BY videogame_id;
 --8- Selezionare tutte le recensioni con voto compreso tra 2 e 4 (2947)
 select *
 FROM reviews
