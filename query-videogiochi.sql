@@ -25,7 +25,7 @@ select *
 FROM awards
 WHERE description like '%facere%';
 --7- Selezionare tutti i videogame che hanno la categoria 2 (FPS) o 6 (RPG), mostrandoli una sola volta (del videogioco vogliamo solo l'ID) (287)
-select DISTINCT videogame_id
+select  videogame_id
 FROM category_videogame
 WHERE category_id = 2 OR category_id = 6
 GROUP BY videogame_id;
@@ -58,13 +58,13 @@ AND DATEPART(year, release_date) = 2018;
 --QUERY CON GROUPBY
 
 --1- Contare quante software house ci sono per ogni paese (3)
-select count(*) number
+select country, count(*) number
 FROM software_houses
 GROUP BY country;
 --2- Contare quante recensioni ha ricevuto ogni videogioco (del videogioco vogliamo solo l'ID) (500)
-select count(*) 
-FROM videogames
-GROUP BY country;
+select videogame_id, count(*) number 
+FROM reviews
+GROUP BY videogame_id;
 --3- Contare quanti videogiochi hanno ciascuna classificazione PEGI (della classificazione PEGI vogliamo solo l'ID) (13)
 
 --4- Mostrare il numero di videogiochi rilasciati ogni anno (11)
