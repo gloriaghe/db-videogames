@@ -143,16 +143,41 @@ INNER JOIN tournament_videogame ON tournament_videogame.tournament_id = tourname
 INNER JOIN videogames ON videogames.id = tournament_videogame.videogame_id
 INNER JOIN award_videogame ON award_videogame.videogame_id = videogames.id
 INNER JOIN awards ON awards.id = award_videogame.award_id
-WHERE awards.name = 'Gioco dell%' AND award_videogame = 2018
+--WHERE awards.name = 'Gioco dell%' AND award_videogame.year = '2018';
+WHERE awards.id = 1 AND award_videogame.year = '2018';
 --9- Selezionare i giocatori che hanno giocato al gioco più atteso del 2018 in un torneo del 2019 (3306)
-
+SELECT DISTINCT tournaments.name, players.*
+FROM tournaments
+INNER JOIN player_tournament ON tournaments.id = player_tournament.tournament_id
+INNER JOIN players ON player_tournament.player_id = players.id
+INNER JOIN tournament_videogame ON tournaments.id = tournament_videogame.tournament_id
+INNER JOIN videogames ON videogames.id = tournament_videogame.videogame_id
+INNER JOIN award_videogame ON award_videogame.videogame_id = videogames.id
+INNER JOIN awards ON awards.id = award_videogame.award_id
+WHERE awards.name = 'Gioco più atteso' AND award_videogame.year = '2018' AND tournaments.year = '2019';
 
 --*********** BONUS ***********
 
 --10- Selezionare i dati della prima software house che ha rilasciato un gioco, assieme ai dati del gioco stesso (software house id : 5)
+SELECT TOP 1 software_houses.*, videogames.*
+FROM software_houses
+INNER JOIN videogames ON software_houses.id = videogames.software_house_id
+ORDER BY videogames.release_date ASC;
 
 --11- Selezionare i dati del videogame (id, name, release_date, totale recensioni) con più recensioni (videogame id : 398)
+SELECT TOP 1 videogames.id, videogames.name, videogames.release_date, count(*) as [number_review]
+FROM videogames
+INNER JOIN reviews ON reviews.videogame_id = videogames.id
+GROUP BY videogames.id, videogames.name, videogames.release_date
+ORDER BY number_review DESC;
 
 --12- Selezionare la software house che ha vinto più premi tra il 2015 e il 2016 (software house id : 1)
+SELECT TOP 1 software_houses.id, software_houses.name, count(*) as [number_awards]
+FROM software_houses
+INNER JOIN videogames ON software_houses.id = videogames.software_house_id
+INNER JOIN award_videogame ON videogames.id = award_videogame.videogame_id
+WHERE award_videogame.year >= '2015' AND award_videogame.year <= '2016'
+GROUP BY software_houses.id, software_houses.name
+ORDER BY number_awards DESC;
 
 --13- Selezionare le categorie dei videogame i quali hanno una media recensioni inferiore a 1.5 (10)
